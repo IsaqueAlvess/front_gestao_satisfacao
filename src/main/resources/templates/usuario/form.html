@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Formulário de Avaliação</title>
+    <script>
+
+        function ativaContato(){
+            var pontuacao = document.getElementById("pontuacao");
+            var contatoDiv = document.getElementById("divContato"); // Selecione a div que deseja ocultar/exibir
+
+            pontuacao.addEventListener("change", () => {
+                if (pontuacao.value <= 2) {
+                    contatoDiv.style.display = "block";
+                } else {
+                    contatoDiv.style.display = "none";
+                }
+            });
+        }
+    </script>
+</head>
+<body class="bg-gray-900">
+    <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div class="relative flex h-16 items-center justify-start text-white">
+                <div class="space-x-4">
+                    <a href="/usuario/profile" class="bg-gray-900 rounded-md px-3 py-2">Profile</a>
+                    <a href="/usuario/avaliacoes">Lista de resultados</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-8">
+        <div class="bg-gray-800 p-8 rounded-lg shadow-md">
+            <h1 class="text-2xl font-bold text-gray-100 text-center mb-8">Formulário de Avaliação</h1>
+
+            <form class="mt-4" th:action="@{/validate}" th:object="${form}" method="post">
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-400 font-bold mb-2">E-mail:</label>
+                    <input type="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="pontuacao" class="block text-gray-400 font-bold mb-2">Pontuação:</label>
+                    <input type="number" id="pontuacao" onchange="ativaContato()" onblur="ativaContato()" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="observacoes" class="block text-gray-400 font-bold mb-2">Observações:</label>
+                    <textarea id="observacoes" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                </div>
+                <div id="divContato" class="mb-4" style="display: none;">
+                    <label for="contato" class="block text-gray-400 font-bold mb-2">Contato:</label>
+                    <input type="text" id="contato" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Enviar Avaliação</button>
+            </form>
+
+            <p class="text-red-400" th:if="${error_message}" th:text="${error_message}"></p>
+            <p class="text-green-400" th:if="${success_message}" th:text="${success_message}"></p>
+        </div>
+    </div>
+</body>
+</html>
